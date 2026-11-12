@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1A0B33">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="가계부">
+  <title>가계부</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" type="image/png" href="./icon-192.png">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <h1>가계부</h1>
+      <button class="chip-btn" id="openChart" type="button">그래프</button>
+    </header>
+
+    <main class="today">
+      <div class="today-head">
+        <h2 id="dayTitle">오늘의 기록</h2>
+        <button class="go-today" id="goToday" type="button" hidden>오늘로</button>
+      </div>
+      <div class="day-nav">
+        <button class="nav-btn" id="prevDay" type="button" aria-label="전날 보기">◀</button>
+        <span class="date" id="todayDate"></span>
+        <button class="nav-btn" id="nextDay" type="button" aria-label="다음 날 보기">▶</button>
+      </div>
+      <ul class="list" id="list"></ul>
+      <p class="empty" id="empty">아직 오늘 쓴 돈이 없어요.<br>돈이 나가면 아래 버튼을 눌러 체크하세요.</p>
+    </main>
+
+    <footer class="bottom">
+      <button class="big-btn" id="openAdd" type="button">
+        <span class="big-label" id="bigLabel">오늘 쓴 돈 · 눌러서 체크</span>
+        <span class="big-total" id="total">0원</span>
+      </button>
+    </footer>
+  </div>
+
+  <!-- 지출 체크 창 -->
+  <div class="sheet-wrap" id="addSheet" hidden>
+    <div class="backdrop" data-close></div>
+    <form class="sheet" id="addForm" autocomplete="off">
+      <h3 id="addTitle">지출 체크</h3>
+      <label class="field">
+        <span>날짜</span>
+        <input id="date" type="date">
+      </label>
+      <label class="field">
+        <span>용도</span>
+        <input id="memo" type="text" maxlength="30" enterkeyhint="next" placeholder="예: 식비 (아래 버튼으로 골라도 돼요)">
+      </label>
+      <div class="quick" id="quick">
+        <button type="button">식비</button>
+        <button type="button">카페</button>
+        <button type="button">교통</button>
+        <button type="button">쇼핑</button>
+        <button type="button">생활</button>
+      </div>
+      <label class="field">
+        <span>장소 <small class="hint" id="placeHint"></small></span>
+        <input id="place" type="text" maxlength="30" enterkeyhint="next" placeholder="예: 회사 앞 편의점">
+      </label>
+      <label class="field">
+        <span>금액</span>
+        <div class="money">
+          <input id="amount" type="text" inputmode="numeric" pattern="[0-9,]*" enterkeyhint="done" placeholder="0">
+          <b>원</b>
+        </div>
+      </label>
+      <p class="error" id="addError" hidden></p>
+      <div class="row">
+        <button class="pill ghost" type="button" data-close>취소</button>
+        <button class="pill main" type="submit" id="addSubmit">기록하기</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 그래프 창 -->
+  <div class="sheet-wrap" id="chartSheet" hidden>
+    <div class="backdrop" data-close></div>
+    <section class="sheet">
+      <h3>최근 7일 지출 <small class="unit">(단위: 원)</small></h3>
+      <div class="bars" id="weekBars"></div>
+      <h3 id="dayBarsTitle">오늘 용도별 지출</h3>
+      <div class="hbars" id="todayBars"></div>
+      <div class="row">
+        <button class="pill main" type="button" data-close>닫기</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 지우기 확인 창 -->
+  <div class="sheet-wrap center" id="confirmSheet" hidden>
+    <div class="backdrop" data-close></div>
+    <section class="dialog">
+      <p class="dialog-title">정말 지울까요?</p>
+      <p class="dialog-text" id="confirmText"></p>
+      <div class="row">
+        <button class="pill ghost" type="button" data-close>아니요</button>
+        <button class="pill danger" type="button" id="confirmYes">지우기</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
